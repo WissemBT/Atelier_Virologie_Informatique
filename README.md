@@ -48,3 +48,30 @@ hello: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically link
 **xv**
 taille de hello est 13888, or le taille de helloworld est 15968.  
 La différence de taille entre les fichiers hello et helloworld s'explique par la manière dont l'appel système write est implémenté dans chacun des fichiers. Le fichier hello utilise  l'assembleur pour effectuer l'appel système, ce qui réduit la taille du fichier exécutable. En revanche, le fichier helloworld  utilise des bibliothèques C standard, ce qui peut entraîner une augmentation de la taille du fichier exécutable en raison de l'inclusion de fonctionnalités supplémentaires de la bibliothèque standard C.
+**xvi** lorsque on fait l'appel ./hello , on obtient un segmentation fault , ce message est attendu parce que on a eu un warning lors de la compilation nous disons que le symbole d'entrée _start n'a été pas trouvé.
+**xvii** _start est le point de départ personnalisé qui utilise l'assembleur pour faire un appelle au main(), permettant à le programme de commencer son exécution.  
+**xviii** le message d'erreur est parce que on a pas de fonction exit aprés l'execution de programmes
+**xix**
+```
+static inline long long syscall1(long long syscallnum, long long arg0)
+{
+    register long long syscallnum_ __asm__("rax");
+    register long long arg0_ __asm__("rdi");
+    syscallnum_ = syscallnum;
+    arg0_ = arg0;
+    asm volatile
+    (
+        "syscall"
+        : "+r"(syscallnum_)
+        : "r"(arg0_)
+    );
+    return syscallnum_;
+}
+
+static long long exit(int arg){
+        syscall1(__NR_exit, arg);
+}
+```
+maintenant, le code fonctionne sans aucun erreur.
+
+
