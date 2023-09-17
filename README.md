@@ -124,7 +124,7 @@ La macro-fonction STR crée une chaîne de caractères indépendante de la posit
 Le code assembleur généré pour la fonction main() montre que la chaîne de caractères a été créée de manière indépendante de la position. Cela est confirmé par l'instruction call 10d2 <.After_string137>, qui appelle l'adresse .After_string137, où la chaîne de caractères a été générée dynamiquement. Cette approche permet d'obtenir un code indépendant de la position pour la chaîne de caractères, comme souhaité.  
 **vi** le programme fonctionne  
 **vii** done  
-**viii** done
+**viii** done  
 **ix** 
 ```void main() {
     int SizeOfInjectedCode = End - _start;
@@ -141,3 +141,5 @@ on a trouvé comme résultat 377
 Hello, World!
 Taille du code est : 377
 ```
+**x** la taille de l'éxecutable est 14080 et la taille de code à injecter est 377, cette difference peut être expliquer l'existence des en-têtes et des autres sections outre que le code.  
+**xi** la taille de .text en hexadecimal est 0000000000000352 l'équivalent de 850 en décimal, cette section contient le code. on trouve que la taille de code à injecter est presque la moitié de taille de code.
