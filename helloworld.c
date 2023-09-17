@@ -3,11 +3,8 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <string.h>
-void main(){
-	int fd;
-	char* filename= "helloworld.txt";
-	fd = open(filename,O_RDWR);
-	char buf[50] = "Hello, World!\n\r";
-	write(fd,&buf,strlen(buf));
-	close(fd);
+int main(){
+    const char* message = "Hello, World!\n";
+    write(1, message, sizeof(message) - 1); 
+    return 0;
 }
