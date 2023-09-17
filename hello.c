@@ -1,4 +1,14 @@
 #include <linux/unistd.h>
+#define STR( str ) \
+({ char* var = 0 ; \
+asm volatile ( "call .After_string%=\n" \
+".string \""str"\"\n" \
+".byte 0 \n" \
+".After_string%=:\n" \
+"\tpop %0\n" \
+: "=m" ( var ) ) ; \
+var ; })
+
 
 void _start()
 {
@@ -50,7 +60,7 @@ static long long exit(int arg){
 }
 
 void main() {
-    const char* message = "Hello, World!\n";
-    write(1, message, sizeof(message) - 1); 
+    
+    write(1,STR("Hello, World!\\r\\n") , 15); 
     exit(0);
 }

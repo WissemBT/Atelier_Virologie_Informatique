@@ -91,3 +91,37 @@ Disassembly of section .text:
     1000:       f3 0f 1e fa             endbr64
 ```
 on peut aussi verifier qu'il n y a que les fonctions qu'on a écrit jusqu'à maintenant.
+## Un premier pas vers l'écriture d'un parasite
+**i** Le code indépendant de la position (PIC, Position-Independent Code) est un type de code informatique qui peut être exécuté à n'importe quelle adresse mémoire, sans dépendre d'une adresse mémoire spécifique. Cela signifie que le code peut être chargé en mémoire à différentes adresses, et il fonctionnera toujours correctement, quel que soit l'endroit où il est chargé.  
+**ii** Pour créer un code assembleur qui est indépendant de la position (PIC), on peut utiliser quelques techniques tels que :   
+1. l'utilisation de registres :  pour stocker et manipuler les données en évitant l'accés directement à la mémoire en utilisant des adresses fixes. 
+2. Calcul relatif des adresses : Cela garantit que les adresses sont calculées en fonction de la position actuelle dans le code.
+3. Compilation PIC : en gcc '-fpic'
+  
+**iii**
+La macro-fonction STR crée une chaîne de caractères indépendante de la position dans le code assembleur en utilisant une astuce d'assembleur en ligne pour la générer dynamiquement et stocker son adresse dans une variable C. Cela permet d'accéder à la chaîne de caractères de manière flexible, indépendamment de sa position en mémoire.  
+**v** 
+```
+00000000000010a8 <main>:
+    10a8:       f3 0f 1e fa             endbr64 
+    10ac:       55                      push   rbp
+    10ad:       48 89 e5                mov    rbp,rsp
+    10b0:       48 83 ec 10             sub    rsp,0x10
+    10b4:       48 c7 45 f8 00 00 00    mov    QWORD PTR [rbp-0x8],0x0
+    10bb:       00 
+    10bc:       e8 11 00 00 00          call   10d2 <.After_string137>
+    10c1:       48                      rex.W
+    10c2:       65 6c                   gs ins BYTE PTR es:[rdi],dx
+    10c4:       6c                      ins    BYTE PTR es:[rdi],dx
+    10c5:       6f                      outs   dx,DWORD PTR ds:[rsi]
+    10c6:       2c 20                   sub    al,0x20
+    10c8:       57                      push   rdi
+    10c9:       6f                      outs   dx,DWORD PTR ds:[rsi]
+    10ca:       72 6c                   jb     1138 <.After_string137+0x66>
+    10cc:       64 21 0d 0a 00 00       and    DWORD PTR fs:[rip+0xffffffff8f00000a],ecx 
+```
+
+Le code assembleur généré pour la fonction main() montre que la chaîne de caractères a été créée de manière indépendante de la position. Cela est confirmé par l'instruction call 10d2 <.After_string137>, qui appelle l'adresse .After_string137, où la chaîne de caractères a été générée dynamiquement. Cette approche permet d'obtenir un code indépendant de la position pour la chaîne de caractères, comme souhaité.  
+**vi** le programme fonctionne  
+
+
