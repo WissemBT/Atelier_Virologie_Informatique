@@ -25,7 +25,7 @@ l'étiquette est _start, et le point d'entrée se trouve au section .text
 -frame_dummy à l'adresse 0x11c0  
 -main à l'adresse 0x11c9  
 ##Ecriture d'un programme C sans librairie standard
-**ix** done
+**ix** done  
 **x.a**
 '-nostdlib' : Cette option indique au linker de ne pas inclure les bibliothèques standard (comme libc) lors de la création de l'exécutable final. Vous devrez fournir vous-même les fonctions standard ou utiliser des bibliothèques externes.
   
@@ -47,10 +47,10 @@ il s'agit d'un ficher ELF, lorsque on utilise la commande file hello :
 hello: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=ac70a1787f04e9ae5e08024cbf826c2ccba4364c, not stripped  
 **xv**
 taille de hello est 13888, or le taille de helloworld est 15968.  
-La différence de taille entre les fichiers hello et helloworld s'explique par la manière dont l'appel système write est implémenté dans chacun des fichiers. Le fichier hello utilise  l'assembleur pour effectuer l'appel système, ce qui réduit la taille du fichier exécutable. En revanche, le fichier helloworld  utilise des bibliothèques C standard, ce qui peut entraîner une augmentation de la taille du fichier exécutable en raison de l'inclusion de fonctionnalités supplémentaires de la bibliothèque standard C.
-**xvi** lorsque on fait l'appel ./hello , on obtient un segmentation fault , ce message est attendu parce que on a eu un warning lors de la compilation nous disons que le symbole d'entrée _start n'a été pas trouvé.
+La différence de taille entre les fichiers hello et helloworld s'explique par la manière dont l'appel système write est implémenté dans chacun des fichiers. Le fichier hello utilise  l'assembleur pour effectuer l'appel système, ce qui réduit la taille du fichier exécutable. En revanche, le fichier helloworld  utilise des bibliothèques C standard, ce qui peut entraîner une augmentation de la taille du fichier exécutable en raison de l'inclusion de fonctionnalités supplémentaires de la bibliothèque standard C.  
+**xvi** lorsque on fait l'appel ./hello , on obtient un segmentation fault , ce message est attendu parce que on a eu un warning lors de la compilation nous disons que le symbole d'entrée _start n'a été pas trouvé.  
 **xvii** _start est le point de départ personnalisé qui utilise l'assembleur pour faire un appelle au main(), permettant à le programme de commencer son exécution.  
-**xviii** le message d'erreur est parce que on a pas de fonction exit aprés l'execution de programmes
+**xviii** le message d'erreur est parce que on a pas de fonction exit aprés l'execution de programmes  
 **xix**
 ```
 static inline long long syscall1(long long syscallnum, long long arg0)
@@ -72,6 +72,21 @@ static long long exit(int arg){
         syscall1(__NR_exit, arg);
 }
 ```
-maintenant, le code fonctionne sans aucun erreur.
+maintenant, le code fonctionne sans aucun erreur.  
+**xx**
+hello: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=4624e307a4d844c5d828936f42163acdb64edfe4, not stripped  
+**xxi** 
+|.ELF............|   
+**xxii**
+adresse de point d'entrée est  : 0x1000
+  
+**xxiii**
+on trouve 16 sections   
+**xxiv**
+```
+Disassembly of section .text:
 
-
+0000000000001000 <_start>:
+    1000:       f3 0f 1e fa             endbr64
+```
+on peut aussi verifier qu'il n y a que les fonctions qu'on a écrit jusqu'à maintenant.
