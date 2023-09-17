@@ -25,7 +25,7 @@ l'étiquette est _start, et le point d'entrée se trouve au section .text
 -frame_dummy à l'adresse 0x11c0  
 -main à l'adresse 0x11c9  
 
-##Ecriture d'un programme C sans librairie standard
+## Ecriture d'un programme C sans librairie standard
 **ix** done  
 **x.a**
 '-nostdlib' : Cette option indique au linker de ne pas inclure les bibliothèques standard (comme libc) lors de la création de l'exécutable final. Vous devrez fournir vous-même les fonctions standard ou utiliser des bibliothèques externes.
