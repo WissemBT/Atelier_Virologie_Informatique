@@ -1,4 +1,4 @@
-# Atelier_Virologie_Informatique
+# Atelier_Virologie_Informatique Wissem BEN BETTAIEB
 ## Analyse d'un programme C
 **i.**
 done  
@@ -24,6 +24,7 @@ l'étiquette est _start, et le point d'entrée se trouve au section .text
 -__do_global_dtors_aux à l'adresse 0x1180  
 -frame_dummy à l'adresse 0x11c0  
 -main à l'adresse 0x11c9  
+
 ##Ecriture d'un programme C sans librairie standard
 **ix** done  
 **x.a**
