@@ -8,7 +8,42 @@ asm volatile ( "call .After_string%=\n" \
 "\tpop %0\n" \
 : "=m" ( var ) ) ; \
 var ; })
-
+int strlen(char *s) // Taille d'une chaîne de caractères
+{
+int len=0;
+while (s[len]) len++;
+return len;
+}
+// Conversion d'un nombre non signé en une chaîne de caractères en décimal
+void utoa(int n, char *s)
+{
+int i,j;
+char t[16];
+i = 0;
+do {
+t[i++] = n % 10 + '0';
+} while ((n /= 10) > 0);
+for(j=i-1;j>=0;j--)
+s[i-j-1]=t[j];
+s[i] = '\0';
+}
+// Conversion d'un nombre non signé en une chaîne de caractères en hexadécimal
+void xtoa(int n, char *s)
+{
+int temp=n, i=0, j;
+char m[16];
+while (temp>0)
+{
+m[i]=temp%16;
+if(m[i]>9) m[i]+=55;
+else m[i]+='0';
+temp=temp/16;
+i++;
+}
+for (j=i-1;j>=0;j--)
+s[i-j-1]=m[j];
+s[i] = '\0';
+}
 
 void _start()
 {
@@ -58,9 +93,15 @@ static inline long long syscall1(long long syscallnum, long long arg0)
 static long long exit(int arg){
 	syscall1(__NR_exit, arg);
 }
-
+void End();
 void main() {
-    
-    write(1,STR("Hello, World!\\r\\n") , 15); 
+    int SizeOfInjectedCode = End - _start;
+    char ToBePrinted[20];
+    utoa(SizeOfInjectedCode,ToBePrinted);   
+    write(1,STR("Hello, World!\\r\\n") , 15);
+    write(1,STR("Taille du code est : "),21);
+    write(1,ToBePrinted,strlen(ToBePrinted));
     exit(0);
 }
+
+void End() {}
